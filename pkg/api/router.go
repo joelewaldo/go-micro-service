@@ -11,8 +11,13 @@ import (
 func NewRouter() http.Handler {
 	mux := http.NewServeMux()
 
-	mux.Handle("/health", shared.Chain(
+	mux.Handle("GET /health", shared.Chain(
 		http.HandlerFunc(handler.HealthHandler),
+		middleware.Logger,
+	))
+
+	mux.Handle("GET /subtract/{minuend}/{subtrahend}", shared.Chain(
+		http.HandlerFunc(handler.SubtractHandler),
 		middleware.Logger,
 	))
 
