@@ -1,12 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"github.com/joelewaldo/go-micro-service/pkg/hello"
 	"net/http"
+
+	"github.com/joelewaldo/go-micro-service/pkg/api"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	fmt.Println("Running from cmd/go")
-	hello.Test()
+	router := api.NewRouter()
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+
+	addr := "127.0.0.1:3000"
+	logrus.WithField("address: ", addr).Info("Starting Server")
+
+	if err := http.ListenAndServe(addr, router); err != nil {
+		logrus.WithField("Event", "Start Server").Fatal(err)
+	}
 }

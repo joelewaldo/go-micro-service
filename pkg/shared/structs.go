@@ -1,5 +1,7 @@
 package shared
 
+import "net/http"
+
 type CustomError struct {
 	ErrorType   string    `json:"-"`
 	ErrorLogMsg string    `json:"-"`
@@ -26,3 +28,5 @@ var EnumErrorTypes = struct {
 	"Internal",
 	"NotFound",
 }
+
+type Middleware func(http.Handler) http.Handler
