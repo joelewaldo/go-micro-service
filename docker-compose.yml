@@ -25,4 +25,21 @@ services:
       - PORT=7979
       - PRIVATE_KEY_FILE=/run/secrets/private_key
     volumes:
-      - ${HOME}/.ssh/private.pem:/run/secrets/private_key:ro
+      - ${HOME}/.ssh/auth.pem:/run/secrets/private_key:ro
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    depends_on:
+      - db
+    ports:
+      - "3030:3030"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/oauth2?sslmode=disable
+      - LOG_LEVEL=info
+      - HOST=0.0.0.0
+      - PORT=3030
+      - PUBLIC_KEY_FILE=/run/secrets/public_key
+    volumes:
+      - ${HOME}/.ssh/auth_public.pem:/run/secrets/public_key:ro

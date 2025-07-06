@@ -56,9 +56,7 @@ func SubtractHandler(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-
 	result := minuend - subtrahend
-
 	resp := SubtractResponse{Result: result}
 
 	w.Header().Set("Content-Type", "application/json")
