@@ -1,0 +1,9 @@
+FROM postgres:17-alpine
+
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=oauth2
+
+COPY internal/oauth2/db/migrations/*.sql /docker-entrypoint-initdb.d/
+
+EXPOSE 5432

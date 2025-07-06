@@ -1,0 +1,28 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: oauth2
+
+  oauth:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "7979:7979"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/oauth2?sslmode=disable
+      - LOG_LEVEL=info
+      - HOST=0.0.0.0
+      - PORT=7979
+      - PRIVATE_KEY_FILE=/run/secrets/private_key
+    volumes:
+      - ${HOME}/.ssh/private.pem:/run/secrets/private_key:ro

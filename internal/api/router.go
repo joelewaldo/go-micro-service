@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/joelewaldo/go-micro-service/internal/api/handler"
-	"github.com/joelewaldo/go-micro-service/internal/api/middleware"
+	"github.com/joelewaldo/go-micro-service/pkg/middleware"
 	"github.com/joelewaldo/go-micro-service/pkg/shared"
 )
 

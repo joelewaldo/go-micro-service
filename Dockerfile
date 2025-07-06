@@ -1,0 +1,24 @@
+FROM golang:1.24-alpine AS builder
+
+RUN apk add --no-cache bash git
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN chmod +x ./build.sh
+
+RUN ./build.sh
+
+FROM alpine:3.18
+
+RUN apk add --no-cache ca-certificates
+
+WORKDIR /app
+
+COPY --from=builder /app/bin/oauth2 ./oauth2
+
+ENTRYPOINT ["./oauth2"]
